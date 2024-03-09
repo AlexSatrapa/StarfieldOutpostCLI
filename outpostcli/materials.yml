@@ -139,7 +139,7 @@
     Copper: 3
     Nickel: 4
   structure:
-    cargo: 0
+    cargo: 5
     power: -5
 - name: Extractor - Gas - Commercial
   materials:
@@ -148,7 +148,7 @@
     Reactive Gauge: 2
     Vanadium: 4
   structure:
-    cargo: 0
+    cargo: 7
     power: -10
 - name: Extractor - Gas - Industrial
   materials:
@@ -157,7 +157,7 @@
     Substrate Molecule Sieve: 2
     Vanadium: 6
   structure:
-    cargo: 0
+    cargo: 10
     power: -20
 - name: Extractor - Liquid
   materials:
@@ -165,7 +165,7 @@
     Iron: 3
     Nickel: 4
   structure:
-    cargo: 0
+    cargo: 6
     power: -5
 - name: Extractor - Liquid - Commercial
   materials:
@@ -174,7 +174,7 @@
     Molecular Sieve: 2
     Titanium: 4
   structure:
-    cargo: 0
+    cargo: 9
     power: -10
 - name: Extractor - Liquid - Industrial
   materials:
@@ -183,15 +183,41 @@
     Titanium: 6
     Veryl-Treated Manifold: 3
   structure:
-    cargo: 0
+    cargo: 10
     power: -10
+- name: Extractor - Liquid Vapor
+  materials:
+    Aluminum: 5
+    Benzene: 3
+    Membrane: 4
+  structure:
+    cargo: 10
+    power: -5
+- name: Extractor - Liquid Vapor - Commercial
+  materials:
+    Adaptive Frame: 3
+    Austenitic Manifold: 1
+    Semimetal Wafer: 2
+    Tantalum: 4
+  structure:
+    cargo: 10
+    power: -5
+- name: Extractor - Liquid Vapor - Industrial
+  materials:
+    Adaptive Frame: 5
+    Austenitic Manifold: 2
+    Indicite Wafer: 2
+    Tantalum: 6
+  structure:
+    cargo: 10
+    power: -5
 - name: Extractor - Solid
   materials:
     Aluminum: 4
     Iron: 5
     Tungsten: 2
   structure:
-    cargo: 0
+    cargo: 10
     power: -5
 - name: Extractor - Solid - Commercial
   materials:
@@ -200,7 +226,7 @@
     Isotopic Coolant: 2
     Tungsten: 4
   structure:
-    cargo: 0
+    cargo: 15
     power: -10
 - name: Extractor - Solid - Industrial
   materials:
@@ -209,7 +235,7 @@
     Isotopic Coolant: 4
     Tungsten: 6
   structure:
-    cargo: 0
+    cargo: 21
     power: -20
 - name: Fiber
   mass: 0.5
