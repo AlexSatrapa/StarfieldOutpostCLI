@@ -8,6 +8,7 @@ Provides an interface to the Starfield materials database.
 """
 
 import os
+import click
 import yaml
 
 materials_content = None # pylint: disable=C0103
@@ -51,13 +52,14 @@ def expand(yaml_string):
             item_name = item
             item_count = 1
         if item_name not in materials_dict:
+            click.echo(F'Item {item_name} was not found in materials database', err=True)
             continue
         item_materials = materials_dict[item_name]
         item_materials['count'] = item_count
         expanded_structure.append(item_materials)
     return expanded_structure
 
-def condense(yaml_structure):
+def condense(yaml_structure) -> str:
     """
     Given a data structure, produce a normalised YAML outpost specification.
     """
@@ -73,7 +75,7 @@ def condense(yaml_structure):
     yaml_text = yaml.dump(normalised_structure)
     return yaml_text
 
-def bom(yaml_structure):
+def bom(yaml_structure) -> dict:
     """
     Given a data structure, produce a Bill of Materials (BOM) listing the
     first-level expansion of the materials required to build the specified
@@ -92,5 +94,4 @@ def bom(yaml_structure):
                     bom_dict[material] = 0
                 material_quantity = materials[material] * item_count
                 bom_dict[material] += material_quantity
-    bom_yaml = yaml.dump(bom_dict)
-    return bom_yaml
+    return bom_dict

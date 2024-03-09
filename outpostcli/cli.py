@@ -93,11 +93,16 @@ def bom(yaml_specification):
 
     YAML_SPECIFICATION is the filename to read the specification from.
     If this is not provided, the specification will be read from STDIN.
+
+    Output is a Markdown list of Material:Quantity entries.
     """
     if yaml_specification is None:
         input_stream = click.get_text_stream('stdin')
         yaml_specification = input_stream.read()
     materials.load_default()
     yaml_structure = materials.expand(yaml_specification)
-    bom_yaml = materials.bom(yaml_structure)
-    click.echo(bom_yaml)
+    bom_structure = materials.bom(yaml_structure)
+    bom_markdown_items = [F'- {item}: {count}' for (item, count) in bom_structure.items()]
+    bom_markdown = "\n".join(bom_markdown_items)
+    click.echo("Bill of Materials:")
+    click.echo(bom_markdown)
