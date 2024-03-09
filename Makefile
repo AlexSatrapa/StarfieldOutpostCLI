@@ -1,11 +1,11 @@
-.DEFAULT_GOAL := build
-.PHONY: build publish package coverage test lint docs venv
+.DEFAULT_GOAL := dev-env
+.PHONY: build package coverage test lint venv
 PROJ_SLUG = outpostcli
 CLI_NAME = outpost
 PY_VERSION = 3.8
 LINTER = pylint
 
-install: venv
+dev-env: venv
 	venv/bin/pip install --editable .
 
 freeze: venv
@@ -26,24 +26,11 @@ quicktest:
 coverage: lint
 	py.test --cov-report html --cov=$(PROJ_SLUG) tests/
 
-docs: coverage
-	mkdir -p docs/source/_static
-	mkdir -p docs/source/_templates
-	cd docs && $(MAKE) html
-
-answers:
-	cd docs && $(MAKE) html
-	xdg-open docs/build/html/index.html
-
-package: clean docs venv
+package: clean venv
 	venv/bin/python setup.py sdist
-
-publish: package
-	venv/bin/twine upload dist/*
 
 clean:
 	rm -rf dist \
-	rm -rf docs/build \
 	rm -rf *.egg-info
 	coverage erase
 

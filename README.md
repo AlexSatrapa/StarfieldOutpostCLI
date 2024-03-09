@@ -4,7 +4,7 @@ Produce a bill of materials for an outpost construction.
 
 ## Operation
 
-Prepare a definition of the components of your outpost in YAML (it's a very simple format, just a bulleted list using hypens as a bullet):
+WIP: Prepare a definition of the components of your outpost in YAML-ish Markdown format (it's a very simple format, just a bulleted list using hypens as a bullet):
 
 ```
 - Landing Pad - Small
@@ -31,17 +31,36 @@ $ outpost bom procyon-iii.yml
 - Tungsten: 18
 ```
 
+WIP stretch goal: coalesce common elements:
+
+```
+$ outpost normalise
+[manually paste in the following]
+- Landing Pad - Small
+- Industrial Workbench
+- 3 Wind Turbine - Advanced (25 power)
+- Extractor - Copper
+- Storage - Solid - Large (copper)
+- Extractor - Beryllium
+- Storage - Solid - Large (beryllium)
+[calculator returns the following]
+- Landing Pad - Small
+- Industrial Workbench
+- 3 Wind Turbine - Advanced (25 power)
+- 2 Extractor (beryllium, copper)
+- 2 Storage - Solid - Large (beryllium, copper)
+```
+
 ## Project Features
 
-* [outpostcli](http://OutpostCLI.readthedocs.io/)
 * a starter [Click](http://click.pocoo.org/5/) command-line application
 * automated unit tests you can run with [pytest](https://docs.pytest.org/en/latest/)
-* a [Sphinx](http://www.sphinx-doc.org/en/master/) documentation project
+* on macOS check out the "make redgreen" option which runs the test suite any time you save a change
 
 ## Getting Started
 
-The project's documentation contains a section to help you
-[get started](https://OutpostCLI.readthedocs.io/en/latest/getting_started.html) as a developer or user of the library.
+* Clone the Project: `git clone git@github.com:AlexSatrapa/StarfieldOutpostCLI.git`
+* run `make dev-env`
 
 ## Development Prerequisites
 
@@ -54,7 +73,6 @@ If you're going to be working in the code (rather than just using the library), 
 
 Below are some handy resource links.
 
-* [Project Documentation](http://OutpostCLI.readthedocs.io/)
 * [Click](http://click.pocoo.org/5/) is a Python package for creating beautiful command line interfaces in a composable way with as little code as necessary.
 * [Sphinx](http://www.sphinx-doc.org/en/master/) is a tool that makes it easy to create intelligent and beautiful documentation, written by Geog Brandl and licnsed under the BSD license.
 * [pytest](https://docs.pytest.org/en/latest/) helps you write better programs.
