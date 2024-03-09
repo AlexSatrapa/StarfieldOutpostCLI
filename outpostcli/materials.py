@@ -72,3 +72,20 @@ def condense(yaml_structure):
         normalised_structure.append(normalised_entry)
     yaml_text = yaml.dump(normalised_structure)
     return yaml_text
+
+def bom(yaml_structure):
+    """
+    Given a data structure, produce a Bill of Materials (BOM) listing the
+    first-level expansion of the materials required to build the specified
+    outpost.
+    """
+    bom_dict = {}
+    for entry in yaml_structure:
+        if 'materials' in entry:
+            materials = entry['materials']
+            for material in materials.keys():
+                if material not in bom_dict:
+                    bom_dict[material] = 0
+                bom_dict[material] += materials[material]
+    bom_yaml = yaml.dump(bom_dict)
+    return bom_yaml
