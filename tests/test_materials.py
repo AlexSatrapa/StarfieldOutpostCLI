@@ -27,7 +27,7 @@ class DescribeMaterialsModule(unittest.TestCase):
         {
             'name': 'Wind Turbine - Advanced',
             'count': 2,
-            'label_text': None,
+            'label_text': '',
             'materials': {
                 'Aluminum': 5,
                 'Isocentered Magnet': 2,
@@ -40,7 +40,7 @@ class DescribeMaterialsModule(unittest.TestCase):
         {
             'name': 'Landing Pad - Small',
             'count': 1,
-            'label_text': None,
+            'label_text': '',
             'materials': {
                 'Aluminum': 8,
                 'Iron': 20,
@@ -53,7 +53,7 @@ class DescribeMaterialsModule(unittest.TestCase):
         {
             'name': 'Industrial Workbench',
             'count': 1,
-            'label_text': None,
+            'label_text': '',
             'materials': {
                 'Aluminum': 4,
                 'Iron': 3,
@@ -71,6 +71,7 @@ class DescribeMaterialsModule(unittest.TestCase):
         {
             'name': 'Wind Turbine - Advanced',
             'count': 2,
+            'label_text': '',
             'materials': {
                 'Aluminum': 5,
                 'Isocentered Magnet': 2,
@@ -83,6 +84,7 @@ class DescribeMaterialsModule(unittest.TestCase):
         {
             'name': 'Landing Pad - Small',
             'count': 1,
+            'label_text': '',
             'materials': {
                 'Aluminum': 8,
                 'Iron': 20,
@@ -95,6 +97,7 @@ class DescribeMaterialsModule(unittest.TestCase):
         {
             'name': 'Industrial Workbench',
             'count': 1,
+            'label_text': '',
             'materials': {
                 'Aluminum': 4,
                 'Iron': 3,
