@@ -85,3 +85,24 @@ def normalise(yaml_specification):
     yaml_structure = materials.expand(yaml_specification)
     normalised_yaml_string = materials.condense(yaml_structure)
     click.echo(normalised_yaml_string)
+
+@outpost.command()
+@click.argument('yaml_specification', type=click.File('rb'), required=False)
+def bom(yaml_specification):
+    """Produce a bill of materials (BOM) from an outpost spec.
+
+    YAML_SPECIFICATION is the filename to read the specification from.
+    If this is not provided, the specification will be read from STDIN.
+
+    Output is a Markdown list of Material:Quantity entries.
+    """
+    if yaml_specification is None:
+        input_stream = click.get_text_stream('stdin')
+        yaml_specification = input_stream.read()
+    materials.load_default()
+    yaml_structure = materials.expand(yaml_specification)
+    bom_structure = materials.bom(yaml_structure)
+    bom_markdown_items = [F'- {item}: {count}' for (item, count) in bom_structure.items()]
+    bom_markdown = "\n".join(bom_markdown_items)
+    click.echo("Bill of Materials:")
+    click.echo(bom_markdown)
