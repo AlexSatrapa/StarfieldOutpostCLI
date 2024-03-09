@@ -133,12 +133,125 @@
 - name: Europium
   mass: 1
   value: 40
+- name: Extractor - Gas
+  materials:
+    Aluminum: 5
+    Copper: 3
+    Nickel: 4
+  structure:
+    cargo: 5
+    power: -5
+- name: Extractor - Gas - Commercial
+  materials:
+    Adaptive Frame: 3
+    Molecular Sieve: 2
+    Reactive Gauge: 2
+    Vanadium: 4
+  structure:
+    cargo: 7
+    power: -10
+- name: Extractor - Gas - Industrial
+  materials:
+    Adaptive Frame: 5
+    Reactive Gauge: 3
+    Substrate Molecule Sieve: 2
+    Vanadium: 6
+  structure:
+    cargo: 10
+    power: -20
+- name: Extractor - Liquid
+  materials:
+    Aluminum: 5
+    Iron: 3
+    Nickel: 4
+  structure:
+    cargo: 6
+    power: -5
+- name: Extractor - Liquid - Commercial
+  materials:
+    Adaptive Frame: 3
+    Austenitic Manifold: 3
+    Molecular Sieve: 2
+    Titanium: 4
+  structure:
+    cargo: 9
+    power: -10
+- name: Extractor - Liquid - Industrial
+  materials:
+    Adaptive Frame: 5
+    Substrate Molecule Sieve: 2
+    Titanium: 6
+    Veryl-Treated Manifold: 3
+  structure:
+    cargo: 10
+    power: -10
+- name: Extractor - Liquid Vapor
+  materials:
+    Aluminum: 5
+    Benzene: 3
+    Membrane: 4
+  structure:
+    cargo: 10
+    power: -5
+- name: Extractor - Liquid Vapor - Commercial
+  materials:
+    Adaptive Frame: 3
+    Austenitic Manifold: 1
+    Semimetal Wafer: 2
+    Tantalum: 4
+  structure:
+    cargo: 10
+    power: -5
+- name: Extractor - Liquid Vapor - Industrial
+  materials:
+    Adaptive Frame: 5
+    Austenitic Manifold: 2
+    Indicite Wafer: 2
+    Tantalum: 6
+  structure:
+    cargo: 10
+    power: -5
+- name: Extractor - Solid
+  materials:
+    Aluminum: 4
+    Iron: 5
+    Tungsten: 2
+  structure:
+    cargo: 10
+    power: -5
+- name: Extractor - Solid - Commercial
+  materials:
+    Adaptive Frame: 3
+    Drilling Rig: 1
+    Isotopic Coolant: 2
+    Tungsten: 4
+  structure:
+    cargo: 15
+    power: -10
+- name: Extractor - Solid - Industrial
+  materials:
+    Adaptive Frame: 5
+    Aldumite Drilling Rig: 1
+    Isotopic Coolant: 4
+    Tungsten: 6
+  structure:
+    cargo: 21
+    power: -20
 - name: Fiber
   mass: 0.5
   value: 4
 - name: Fluorine
   mass: 0.5
   value: 12
+- name: Fueled Generator
+  materials:
+    Austenitic Manifold: 1
+    Isocentered Magnet: 1
+    Tau Grade Rheostat: 1
+    Tungsten: 4
+  structure:
+    cargo: 0
+    power: 20
 - name: Gold
   mass: 0.8
   value: 24
@@ -323,6 +436,13 @@
     Positron Battery: 1
   mass: 3.8
   value: 195
+- name: Powered Switch
+  materials:
+    Aluminum: 2
+    Copper: 2
+  structure:
+    cargo: 0
+    power: 0
 - name: Quark-Degenerate Tissues
   mass: 0.3
   value: 240
@@ -343,6 +463,29 @@
     Supercooled Magnet: 1
   mass: 4.6
   value: 295
+- name: Reactor
+  materials:
+    Adaptive Frame: 6
+    Control Rod: 3
+    Lead: 10
+    Nuclear Fuel Rod: 8
+    Paramagnon Conductor: 4
+    Supercooled Magnet: 5
+    Tau Grade Rheostat: 3
+  structure:
+    cargo: 0
+    power: 30
+- name: Reactor - Advanced
+  materials:
+    Control Rod: 5
+    Lead: 20
+    Power Circuit: 3
+    Rothicite Magnet: 5
+    Tasine Superconductor: 4
+    Vytinium Fuel Rod: 8
+  structure:
+    cargo: 0
+    power: 100
 - name: Sealant
   mass: 0.5
   value: 6
@@ -359,6 +502,21 @@
 - name: Silver
   mass: 0.6
   value: 20
+- name: Solar Array
+  materials:
+    Aluminum: 4
+    Beryllium: 2
+    Copper: 3
+  structure:
+    cargo: 0
+    power: 6
+- name: Solar Dome
+  materials:
+    Aluminum: 4
+    Tau Grade Rheostat: 2
+  structure:
+    cargo: 0
+    power: 12
 - name: Solvent
   mass: 0.5
   value: 19
@@ -375,6 +533,54 @@
 - name: Stimulant
   mass: 0.5
   value: 20
+- name: Storage - Gas
+  materials:
+    Adaptive Frame: 3
+    Copper: 6
+    Tungsten: 5
+  structure:
+    cargo: 60
+    power: 0
+- name: Storage - Gas - Medium
+  materials:
+    Adaptive Frame: 5
+    Copper: 10
+    Tungsten: 8
+  structure:
+    cargo: 157
+    power: 0
+- name: Storage - Gas - Large
+  materials:
+    Adaptive Frame: 10
+    Copper: 20
+    Tungsten: 16
+  structure:
+    cargo: 300
+    power: 0
+- name: Storage - Liquid
+  materials:
+    Adaptive Frame: 3
+    Aluminum: 6
+    Nickel: 5
+  structure:
+    cargo: 60
+    power: 0
+- name: Storage - Liquid - Medium
+  materials:
+    Adaptive Frame: 5
+    Aluminum: 10
+    Nickel: 8
+  structure:
+    cargo: 157
+    power: 0
+- name: Storage - Liquid - Large
+  materials:
+    Adaptive Frame: 10
+    Aluminum: 20
+    Nickel: 16
+  structure:
+    cargo: 300
+    power: 0
 - name: Storage - Solid
   materials:
     Adaptive Frame: 3
@@ -382,6 +588,14 @@
     Iron: 6
   structure:
     cargo: 60
+    power: 0
+- name: Storage - Solid - Medium
+  materials:
+    Adaptive Frame: 5
+    Aluminum: 8
+    Iron: 10
+  structure:
+    cargo: 157
     power: 0
 - name: Storage - Solid - Large
   materials:
@@ -479,14 +693,14 @@
     Nickel: 3
   structure:
     cargo: 0
-    power: -6
+    power: 6
 - name: Wind Turbine - Advanced
   materials:
     Aluminum: 5
     Isocentered Magnet: 2
   structure:
     cargo: 0
-    power: -14
+    power: 14
 - name: Xenon
   mass: 0.8
   value: 27
