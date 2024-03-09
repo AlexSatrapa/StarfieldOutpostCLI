@@ -35,4 +35,4 @@ class TestOutpostCommand(unittest.TestCase):
 	def test_produces_a_bill_of_materials(self):
 		runner: CliRunner = CliRunner()
 		result: Result = runner.invoke(cli.outpost, ["bom", "tests/sample_spec.yml"])
-		assert ("Isocentered Magnet: 2" in result.output.strip()), "Output should contain appropriate quantity of Isocentered Magnets"
+		assert ("Isocentered Magnet: 4" in result.output.strip()), "Output should contain appropriate quantity of Isocentered Magnets"

@@ -81,11 +81,16 @@ def bom(yaml_structure):
     """
     bom_dict = {}
     for entry in yaml_structure:
+        if 'count' in entry:
+            item_count = entry['count']
+        else:
+            item_count = 1
         if 'materials' in entry:
             materials = entry['materials']
             for material in materials.keys():
                 if material not in bom_dict:
                     bom_dict[material] = 0
-                bom_dict[material] += materials[material]
+                material_quantity = materials[material] * item_count
+                bom_dict[material] += material_quantity
     bom_yaml = yaml.dump(bom_dict)
     return bom_yaml
