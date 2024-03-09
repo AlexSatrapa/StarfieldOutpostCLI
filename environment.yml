@@ -1,0 +1,3 @@
+name: outpostcli
+dependencies:
+  - python=3.8

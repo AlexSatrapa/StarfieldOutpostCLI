@@ -1,0 +1,14 @@
+click
+jsonschema
+pip-check-reqs
+pip-licenses
+pylint
+pytest
+pytest-cov
+pytest-pythonpath
+pytest-pyspec
+setuptools
+Sphinx
+tox
+twine
+yamllint
