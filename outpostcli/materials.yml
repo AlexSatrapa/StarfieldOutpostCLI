@@ -243,6 +243,15 @@
 - name: Fluorine
   mass: 0.5
   value: 12
+- name: Fueled Generator
+  materials:
+    Austenitic Manifold: 1
+    Isocentered Magnet: 1
+    Tau Grade Rheostat: 1
+    Tungsten: 4
+  structure:
+    cargo: 0
+    power: 20
 - name: Gold
   mass: 0.8
   value: 24
@@ -427,6 +436,13 @@
     Positron Battery: 1
   mass: 3.8
   value: 195
+- name: Powered Switch
+  materials:
+    Aluminum: 2
+    Copper: 2
+  structure:
+    cargo: 0
+    power: 0
 - name: Quark-Degenerate Tissues
   mass: 0.3
   value: 240
@@ -447,6 +463,29 @@
     Supercooled Magnet: 1
   mass: 4.6
   value: 295
+- name: Reactor
+  materials:
+    Adaptive Frame: 6
+    Control Rod: 3
+    Lead: 10
+    Nuclear Fuel Rod: 8
+    Paramagnon Conductor: 4
+    Supercooled Magnet: 5
+    Tau Grade Rheostat: 3
+  structure:
+    cargo: 0
+    power: 30
+- name: Reactor - Advanced
+  materials:
+    Control Rod: 5
+    Lead: 20
+    Power Circuit: 3
+    Rothicite Magnet: 5
+    Tasine Superconductor: 4
+    Vytinium Fuel Rod: 8
+  structure:
+    cargo: 0
+    power: 100
 - name: Sealant
   mass: 0.5
   value: 6
@@ -463,6 +502,21 @@
 - name: Silver
   mass: 0.6
   value: 20
+- name: Solar Array
+  materials:
+    Aluminum: 4
+    Beryllium: 2
+    Copper: 3
+  structure:
+    cargo: 0
+    power: 6
+- name: Solar Dome
+  materials:
+    Aluminum: 4
+    Tau Grade Rheostat: 2
+  structure:
+    cargo: 0
+    power: 12
 - name: Solvent
   mass: 0.5
   value: 19
