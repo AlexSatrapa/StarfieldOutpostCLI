@@ -8,10 +8,15 @@ Provides an interface to the Starfield materials database.
 """
 
 import os
+import re
+import click
 import yaml
 
 materials_content = None # pylint: disable=C0103
 materials_dict = {}      # pylint: disable=C0103
+item_name_regex = re.compile(
+    r'^(?P<item_count>\d+)?\s*(?P<item_name>\w+[^(]*?)\s*(?P<labels>\(.+\)\s*$)?'
+)
 
 def load_materials(yamlpath):
     """
@@ -45,16 +50,29 @@ def expand(yaml_string):
     expanded_structure = []
     for item in yaml_structure:
         if isinstance(item, dict):
-            item_name = next(iter(item.keys()))
-            item_count = item[item_name]
+            item_text = next(iter(item.keys()))
+            item_count = int(item[item_text])
         else:
-            item_name = item
+            item_text = item
             item_count = 1
+        match_result = item_name_regex.fullmatch(item_text)
+        if match_result is None:
+            click.echo(F'{item_text} could not be resolved to an item name', err=True)
+        else:
+            item_name = match_result['item_name']
+            if match_result['item_count'] is not None:
+                item_count = int(match_result['item_count'])
+            if match_result['labels'] is not None:
+                labels = match_result['labels']
+            else:
+                labels = ''
         if item_name not in materials_dict:
+            click.echo(F'{item_name} was not found in materials database', err=True)
             continue
-        item_materials = materials_dict[item_name]
-        item_materials['count'] = item_count
-        expanded_structure.append(item_materials)
+        item_details = materials_dict[item_name]
+        item_details['count'] = item_count
+        item_details['label_text'] = labels
+        expanded_structure.append(item_details)
     return expanded_structure
 
 def condense(yaml_structure):
