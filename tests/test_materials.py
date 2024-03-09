@@ -32,7 +32,7 @@ class DescribeMaterialsModule(unittest.TestCase):
                 'Isocentered Magnet': 2,
             },
             'structure': {
-                'power': -14,
+                'power': 14,
                 'cargo': 0,
             },
         },
@@ -73,7 +73,7 @@ class DescribeMaterialsModule(unittest.TestCase):
                 'Isocentered Magnet': 2,
             },
             'structure': {
-                'power': -14,
+                'power': 14,
                 'cargo': 0,
             },
         },
