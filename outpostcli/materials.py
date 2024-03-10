@@ -5,6 +5,7 @@ Provides an interface to the Starfield materials database.
 .. moduleauthor:: Alex Satrapa <grail@goldweb.com.au>
 """
 
+import copy
 import os
 import re
 import click
@@ -65,14 +66,14 @@ def expand(yaml_string):
             if match_result['item_count'] is not None:
                 item_count = int(match_result['item_count'])
             if match_result['labels'] is not None:
-                label_text = match_result['labels']
+                label_text = match_result['labels'].strip()
             else:
                 label_text = ''
         if item_name not in materials_dict:
             click.echo(F'{item_name} was not found in materials database', err=True)
             continue
 
-        item_details = materials_dict[item_name]
+        item_details = copy.deepcopy(materials_dict[item_name])
         item_details['count'] = item_count
         item_details['label_text'] = label_text
         power_override_value = power_override(label_text)
@@ -81,12 +82,37 @@ def expand(yaml_string):
         expanded_structure.append(item_details)
     return expanded_structure
 
-def condense(yaml_structure):
+def coalesce(expanded_structure):
+    """
+    Given an outpost data structure, combine elements representing the same structure.
+
+    When combining items the counts are added and the label text fields are concatenated.
+    """
+    coalesced_structure = [] # final structure with elements in order they arrived
+    working_structure = {}   # collate data from multiple similar items
+    index_order = []         # retain order of elements
+    for item in expanded_structure:
+        # If this is already in the list, add item_counts and append labels
+        item_name = item['name']
+        if item_name in working_structure:
+            working_structure[item_name]['count'] += item['count']
+            working_structure[item_name]['label_text'] = ' '.join((
+                working_structure[item_name]['label_text'].strip(),
+                item['label_text'].strip()
+            )).strip()
+        else:
+            working_structure[item_name] = copy.deepcopy(item)
+            index_order.append(item_name)
+    for item_name in index_order:
+        coalesced_structure.append(working_structure[item_name])
+    return coalesced_structure
+
+def condense(expanded_structure):
     """
     Given a data structure, produce a normalised YAML outpost specification.
     """
     normalised_structure = []
-    for entry in yaml_structure:
+    for entry in expanded_structure:
         if entry['count'] > 1:
             normalised_entry = {
                 entry['name']: entry['count']
@@ -119,3 +145,13 @@ def power_override(label_string) -> int:
         if match_result['override_suffix'] is not None:
             override_value = int(match_result['override_suffix'])
     return override_value
+
+def power_check(expanded_structure) -> float:
+    """
+    Given a data structure, produce a summation of the power produced and consumed.
+    """
+    power_total = 0.0
+    for entry in expanded_structure:
+        power_for_entry = entry['structure']['power'] * entry['count']
+        power_total += power_for_entry
+    return power_total

@@ -137,6 +137,80 @@ class DescribeMaterialsModule(unittest.TestCase):
         },
         ]
         self.assertEqual(expanded, expected)
+
+    def test_can_coalesce_multiple_elements_of_one_type_into_one_with_item_count(self):
+        expanded = [
+        {
+            'name': 'Wind Turbine - Advanced',
+            'count': 2,
+            'label_text': '(6 power)',
+            'materials': {
+                'Aluminum': 5,
+                'Isocentered Magnet': 2,
+            },
+            'structure': {
+                'power': 6,
+                'cargo': 0,
+            },
+        },
+        {
+            'name': 'Wind Turbine - Advanced',
+            'count': 2,
+            'label_text': '(extraction)',
+            'materials': {
+                'Aluminum': 5,
+                'Isocentered Magnet': 2,
+            },
+            'structure': {
+                'power': 14,
+                'cargo': 0,
+            },
+        },
+        {
+            'name': 'Landing Pad - Small',
+            'count': 1,
+            'label_text': '',
+            'materials': {
+                'Aluminum': 8,
+                'Iron': 20,
+            },
+            'structure': {
+                'cargo': 0,
+                'power': 0,
+            }
+        },
+        ]
+        expected = [
+        {
+            'name': 'Wind Turbine - Advanced',
+            'count': 4,
+            'label_text': '(6 power) (extraction)',
+            'materials': {
+                'Aluminum': 5,
+                'Isocentered Magnet': 2,
+            },
+            'structure': {
+                'power': 6,
+                'cargo': 0,
+            },
+        },
+        {
+            'name': 'Landing Pad - Small',
+            'count': 1,
+            'label_text': '',
+            'materials': {
+                'Aluminum': 8,
+                'Iron': 20,
+            },
+            'structure': {
+                'cargo': 0,
+                'power': 0,
+            }
+        },
+        ]
+        coalesced = materials.coalesce(expanded)
+        self.assertEqual(expected, coalesced)
+
 class DescribeItemName(unittest.TestCase):
     def test_can_appear_on_its_own(self):
         item_name = 'Wind Turbine - Advanced'
@@ -209,3 +283,96 @@ class DescribePowerOverrideLabel(unittest.TestCase):
         label_string = 'vytinium tasine power:3'
         override = materials.power_override(label_string)
         self.assertEqual(override, 3)
+
+class DescribeCoalesceOperation(unittest.TestCase):
+    def test_it_returns_a_specification_with_elements_in_same_order(self):
+        specification = """
+        - Wind Turbine - Advanced: 2
+        - Landing Pad - Small
+        - Industrial Workbench
+        """
+        expanded = materials.expand(specification)
+        coalesced = materials.coalesce(expanded)
+        self.assertEqual(coalesced, expanded)
+
+    def test_it_collates_repeated_elements_into_the_first(self):
+        specification = """
+        - 2 Wind Turbine - Advanced (10 power)
+        - Landing Pad - Small
+        - Industrial Workbench
+        - Extractor - Solid (aluminum)
+        - Extractor - Solid (iron)
+        - Extractor - Solid (nickel)
+        - Extractor - Solid (cobalt)
+        - Wind Turbine - Advanced
+        """
+        expanded = materials.expand(specification)
+        coalesced = materials.coalesce(expanded)
+        expected = [
+        {
+            'name': 'Wind Turbine - Advanced',
+            'count': 3,
+            'label_text': '(10 power)',
+            'materials': {
+                'Aluminum': 5,
+                'Isocentered Magnet': 2,
+            },
+            'structure': {
+                'power': 10,
+                'cargo': 0,
+            },
+        },
+        {
+            'name': 'Landing Pad - Small',
+            'count': 1,
+            'label_text': '',
+            'materials': {
+                'Aluminum': 8,
+                'Iron': 20,
+            },
+            'structure': {
+                'cargo': 0,
+                'power': 0,
+            }
+        },
+        {
+            'name': 'Industrial Workbench',
+            'count': 1,
+            'label_text': '',
+            'materials': {
+                'Aluminum': 4,
+                'Iron': 3,
+            },
+            'structure': {
+                'cargo': 0,
+                'power': 0,
+            },
+        },
+        {
+            'name': 'Extractor - Solid',
+            'count': 4,
+            'label_text': '(aluminum) (iron) (nickel) (cobalt)',
+            'materials': {
+                'Aluminum': 4,
+                'Iron': 5,
+                'Tungsten': 2,
+            },
+            'structure': {
+                'power': -5,
+                'cargo': 10,
+            }
+        },
+        ]
+        self.maxDiff = None
+        self.assertEqual(coalesced, expected)
+
+class DescribePowerCheck(unittest.TestCase):
+    def test_returns_zero_for_empty_outpost_spec(self):
+        specification = """
+        - Wind Turbine - Advanced: 2
+        - Landing Pad - Small
+        - Industrial Workbench
+        """
+        expanded = materials.expand(specification)
+        power_result = materials.power_check(expanded)
+        self.assertEqual(power_result, 28.0)
