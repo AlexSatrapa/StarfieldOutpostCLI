@@ -1,8 +1,6 @@
 """
 Provides an interface to the Starfield materials database.
 
-
-
 .. currentmodule:: outpostcli.materials
 .. moduleauthor:: Alex Satrapa <grail@goldweb.com.au>
 """
@@ -16,6 +14,10 @@ materials_content = None # pylint: disable=C0103
 materials_dict = {}      # pylint: disable=C0103
 item_name_regex = re.compile(
     r'^(?P<item_count>\d+)?\s*(?P<item_name>\w+[^(]*?)\s*(?P<labels>\(.+\)\s*$)?'
+)
+power_override_regex = re.compile(
+    r'((?P<override_prefix>\d+)\s+power|power:\s*(?P<override_suffix>\d+))',
+    flags=re.IGNORECASE
 )
 
 def load_materials(yamlpath):
@@ -63,15 +65,19 @@ def expand(yaml_string):
             if match_result['item_count'] is not None:
                 item_count = int(match_result['item_count'])
             if match_result['labels'] is not None:
-                labels = match_result['labels']
+                label_text = match_result['labels']
             else:
-                labels = ''
+                label_text = ''
         if item_name not in materials_dict:
             click.echo(F'{item_name} was not found in materials database', err=True)
             continue
+
         item_details = materials_dict[item_name]
         item_details['count'] = item_count
-        item_details['label_text'] = labels
+        item_details['label_text'] = label_text
+        power_override_value = power_override(label_text)
+        if power_override_value is not None and 'structure' in item_details:
+            item_details['structure']['power'] = power_override_value
         expanded_structure.append(item_details)
     return expanded_structure
 
@@ -90,3 +96,26 @@ def condense(yaml_structure):
         normalised_structure.append(normalised_entry)
     yaml_text = yaml.dump(normalised_structure)
     return yaml_text
+
+def power_override(label_string) -> int:
+    """
+    Given a string, determine if it contains a power override.
+
+    Power override is presented as the word 'power' accompanied by an integer:
+
+    - Solar Dome (power: 3)
+    - Solar Dome (3 power)
+
+    A power override is an observed power output for a solar or wind power source.
+    These power sources have variable output depending on the world they're deployed
+    on. Solar will tend to get weaker further from the star, wind will get weaker with
+    less atmosphere.
+    """
+    match_result = power_override_regex.search(label_string)
+    override_value = None
+    if match_result is not None:
+        if match_result['override_prefix'] is not None:
+            override_value = int(match_result['override_prefix'])
+        if match_result['override_suffix'] is not None:
+            override_value = int(match_result['override_suffix'])
+    return override_value
