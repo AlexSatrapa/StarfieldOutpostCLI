@@ -12,6 +12,9 @@ import outpostcli.materials as materials
 import pytest, unittest
 
 class DescribeMaterialsModule(unittest.TestCase):
+    def setUp(self):
+        materials.load_default()
+
     def test_contains_expected_data(self):
         materials.load_default()
         self.assertEqual(materials.materials_dict['Aluminum']['mass'], 0.5)
