@@ -36,7 +36,13 @@ class TestOutpostCommand(unittest.TestCase):
 	def test_produces_a_bill_of_materials(self):
 		runner: CliRunner = CliRunner()
 		result: Result = runner.invoke(cli.outpost, ["bom", "tests/sample_spec.yml"])
+		expected = "\n".join(dedent("""
+		- Aluminum: 18
+        - Iron: 20
+        - Isocentered Magnet: 4
+		""").split("\n")[1:])
 		assert ("Isocentered Magnet: 4" in result.output.strip()), "Output should contain appropriate quantity of Isocentered Magnets"
+
 
 	def test_normalise_with_power_check_produces_normalised_spec_with_power_total(self):
 		runner: CliRunner = CliRunner()

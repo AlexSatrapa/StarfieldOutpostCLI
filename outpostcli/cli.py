@@ -109,7 +109,12 @@ def bom(yaml_specification):
     materials.load_default()
     yaml_structure = materials.expand(yaml_specification)
     bom_structure = materials.bom(yaml_structure)
-    bom_markdown_items = [F'- {item}: {count}' for (item, count) in bom_structure.items()]
+    sorted_keys = list(bom_structure.keys())
+    sorted_keys.sort()
+    bom_markdown_items = [
+        F'- {item}: {bom_structure[item]}' for item in
+        sorted_keys
+    ]
     bom_markdown = "\n".join(bom_markdown_items)
     click.echo("Bill of Materials:")
     click.echo(bom_markdown)
