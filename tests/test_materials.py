@@ -370,7 +370,13 @@ class DescribeCoalesceOperation(unittest.TestCase):
         self.assertEqual(coalesced, expected)
 
 class DescribePowerCheck(unittest.TestCase):
-    def test_returns_zero_for_empty_outpost_spec(self):
+    def test_returns_zero_for_outpost_with_no_power(self):
+        specification = "- Landing Pad - Small"
+        expanded = materials.expand(specification)
+        power_result = materials.power_check(expanded)
+        self.assertEqual(power_result, 0)
+
+    def test_returns_normal_values_with_no_override(self):
         specification = """
         - Wind Turbine - Advanced: 2
         - Landing Pad - Small
@@ -379,3 +385,13 @@ class DescribePowerCheck(unittest.TestCase):
         expanded = materials.expand(specification)
         power_result = materials.power_check(expanded)
         self.assertEqual(power_result, 28.0)
+
+    def test_returns_overridden_values_when_overridden(self):
+        specification = """
+        - 2 Wind Turbine - Advanced (6 power)
+        - Landing Pad - Small
+        - Industrial Workbench
+        """
+        expanded = materials.expand(specification)
+        power_result = materials.power_check(expanded)
+        self.assertEqual(power_result, 12.0)
