@@ -123,6 +123,27 @@ def condense(expanded_structure):
     yaml_text = yaml.dump(normalised_structure)
     return yaml_text
 
+def bom(yaml_structure) -> dict:
+    """
+    Given a data structure, produce a Bill of Materials (BOM) listing the
+    first-level expansion of the materials required to build the specified
+    outpost.
+    """
+    bom_dict = {}
+    for entry in yaml_structure:
+        if 'count' in entry:
+            item_count = entry['count']
+        else:
+            item_count = 1
+        if 'materials' in entry:
+            materials = entry['materials']
+            for material in materials.keys():
+                if material not in bom_dict:
+                    bom_dict[material] = 0
+                material_quantity = materials[material] * item_count
+                bom_dict[material] += material_quantity
+    return bom_dict
+
 def power_override(label_string) -> int:
     """
     Given a string, determine if it contains a power override.
@@ -155,3 +176,4 @@ def power_check(expanded_structure) -> float:
         power_for_entry = entry['structure']['power'] * entry['count']
         power_total += power_for_entry
     return power_total
+
