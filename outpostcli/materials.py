@@ -176,4 +176,3 @@ def power_check(expanded_structure) -> float:
         power_for_entry = entry['structure']['power'] * entry['count']
         power_total += power_for_entry
     return power_total
-
