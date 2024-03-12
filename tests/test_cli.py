@@ -12,6 +12,7 @@ import outpostcli.cli as cli
 from outpostcli import __version__
 from click.testing import CliRunner, Result
 import pytest, unittest
+from textwrap import dedent
 
 # To learn more about testing Click applications, visit the link below.
 # http://click.pocoo.org/5/testing/
@@ -36,3 +37,15 @@ class TestOutpostCommand(unittest.TestCase):
 		runner: CliRunner = CliRunner()
 		result: Result = runner.invoke(cli.outpost, ["bom", "tests/sample_spec.yml"])
 		assert ("Isocentered Magnet: 4" in result.output.strip()), "Output should contain appropriate quantity of Isocentered Magnets"
+
+  def test_normalise_with_power_check_produces_normalised_spec_with_power_total(self):
+		runner: CliRunner = CliRunner()
+		result: Result = runner.invoke(cli.outpost, ["normalise", "--power-check", "tests/sample_spec.yml"])
+		expected = "\n".join(dedent("""
+		- Landing Pad - Small
+		- Wind Turbine - Advanced: 2
+
+		Power check: 28.0
+		""").split("\n")[1:])
+
+		self.assertEqual(result.output, expected)

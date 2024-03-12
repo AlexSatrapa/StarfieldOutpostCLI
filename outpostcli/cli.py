@@ -35,6 +35,7 @@ class Info:
     def __init__(self):  # Note: This object must have an empty constructor.
         """Create a new instance."""
         self.verbose: int = 0
+        self.power_check: bool = True
 
 
 # pass_info is a decorator for functions that pass 'Info' objects.
@@ -46,8 +47,9 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 # tasks).
 @click.group()
 @click.option("--verbose", "-v", count=True, help="Enable verbose output.")
+@click.option('--power-check', is_flag=True)
 @pass_info
-def outpost(info: Info, verbose: int):
+def outpost(info: Info, verbose: int, power_check=False):
     """Run outpost."""
     # Use the verbosity count to determine the logging level...
     if verbose > 0:
@@ -64,6 +66,7 @@ def outpost(info: Info, verbose: int):
             )
         )
     info.verbose = verbose
+    info.power_check = power_check
 
 @outpost.command()
 def version():
@@ -72,7 +75,8 @@ def version():
 
 @outpost.command()
 @click.argument('yaml_specification', type=click.File('rb'), required=False)
-def normalise(yaml_specification):
+@click.option('--power-check', is_flag=True)
+def normalise(yaml_specification, power_check=False):
     """Normalise a YAML outpost spec.
 
     YAML_SPECIFICATION is the filename to read the specification from.
@@ -85,6 +89,9 @@ def normalise(yaml_specification):
     yaml_structure = materials.expand(yaml_specification)
     normalised_yaml_string = materials.condense(yaml_structure)
     click.echo(normalised_yaml_string)
+    if power_check:
+        power_result = materials.power_check(yaml_structure)
+        click.echo(F'Power check: {power_result}')
 
 @outpost.command()
 @click.argument('yaml_specification', type=click.File('rb'), required=False)
