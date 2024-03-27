@@ -88,14 +88,16 @@ def normalise(yaml_specification, power_check=False):
     materials.load_default()
     yaml_structure = materials.expand(yaml_specification)
     normalised_yaml_string = materials.condense(yaml_structure)
+    click.echo("\nNormalised:\n")
     click.echo(normalised_yaml_string)
     if power_check:
         power_result = materials.power_check(yaml_structure)
-        click.echo(F'Power check: {power_result}')
+        click.echo(F"Power check: {power_result}")
 
 @outpost.command()
 @click.argument('yaml_specification', type=click.File('rb'), required=False)
-def bom(yaml_specification):
+@click.option('--power-check', is_flag=True)
+def bom(yaml_specification, power_check=False):
     """Produce a bill of materials (BOM) from an outpost spec.
 
     YAML_SPECIFICATION is the filename to read the specification from.
@@ -116,5 +118,45 @@ def bom(yaml_specification):
         sorted_keys
     ]
     bom_markdown = "\n".join(bom_markdown_items)
-    click.echo("Bill of Materials:")
+    click.echo("\nBill of Materials:\n")
     click.echo(bom_markdown)
+    if power_check:
+        power_result = materials.power_check(yaml_structure)
+        click.echo(F"\nPower check: {power_result}")
+
+@outpost.command()
+@click.argument('yaml_specification', type=click.File('rb'), required=False)
+@click.option('--power-check', is_flag=True)
+def specification(yaml_specification, power_check=False):
+    """Produce a normalised outpost specification and BOM from a draft outpost spec.
+
+    YAML_SPECIFICATION is the filename to read the specification from.
+    If this is not provided, the specification will be read from STDIN.
+
+    Output is:
+
+    - a Markdown list of the outpost structures
+    - an optional power check calculation (if '--power-check' is provided)
+    - a Markdown list of Material:Quantity entries.
+    """
+    if yaml_specification is None:
+        input_stream = click.get_text_stream('stdin')
+        yaml_specification = input_stream.read()
+    materials.load_default()
+    yaml_structure = materials.expand(yaml_specification)
+    normalised_yaml_string = materials.condense(yaml_structure)
+    bom_structure = materials.bom(yaml_structure)
+    sorted_keys = list(bom_structure.keys())
+    sorted_keys.sort()
+    bom_markdown_items = [
+        F'- {item}: {bom_structure[item]}' for item in
+        sorted_keys
+    ]
+    bom_markdown = "\n".join(bom_markdown_items)
+    click.echo("\nSpec:\n")
+    click.echo(normalised_yaml_string)
+    click.echo("\nBill of Materials:\n")
+    click.echo(bom_markdown)
+    if power_check:
+        power_result = materials.power_check(yaml_structure)
+        click.echo(F"\nPower check: {power_result}\n")

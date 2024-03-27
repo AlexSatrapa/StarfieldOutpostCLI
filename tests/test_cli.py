@@ -47,11 +47,13 @@ class TestOutpostCommand(unittest.TestCase):
 	def test_normalise_with_power_check_produces_normalised_spec_with_power_total(self):
 		runner: CliRunner = CliRunner()
 		result: Result = runner.invoke(cli.outpost, ["normalise", "--power-check", "tests/sample_spec.yml"])
-		expected = "\n".join(dedent("""
+		expected = dedent("""
+		Normalised:
+
 		- Landing Pad - Small
 		- Wind Turbine - Advanced: 2
 
 		Power check: 28.0
-		""").split("\n")[1:])
+		""")
 
 		self.assertEqual(result.output, expected)

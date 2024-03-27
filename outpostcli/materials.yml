@@ -31,6 +31,33 @@
 - name: Analgesic
   mass: 0.5
   value: 12
+- name: Animal Husbandry Facility
+  materials:
+    Adaptive Frame: 5
+    Aluminum: 8
+    Reactive Gauge: 3
+    Sealant: 3
+  structure:
+    cargo: 0
+    power: -3
+- name: Animal Husbandry Facility - Commercial
+  materials:
+    Adaptive Frame: 7
+    Aluminum: 12
+    Molecular Sieve: 2
+    Sealant: 6
+  structure:
+    cargo: 0
+    power: -3
+- name: Animal Husbandry Facility - Industrial
+  materials:
+    Adaptive Frame: 9
+    Aluminum: 16
+    Sealant: 9
+    Substrate Molecule Sieve: 2
+  structure:
+    cargo: 0
+    power: -3
 - name: Antimicrobial
   mass: 0.5
   value: 10
@@ -255,6 +282,33 @@
 - name: Gold
   mass: 0.8
   value: 24
+- name: Greenhouse
+  materials:
+    Adaptive Frame: 5
+    Fluorine: 4
+    Reactive Gauge: 3
+    Sealant: 3
+  structure:
+    cargo: 0
+    power: -3
+- name: Greenhouse - Commercial
+  materials:
+    Adaptive Frame: 7
+    Fluorine: 8
+    Molecular Sieve: 2
+    Sealant: 6
+  structure:
+    cargo: 0
+    power: -3
+- name: Greenhouse - Industrial
+  materials:
+    Adaptive Frame: 9
+    Fluorine: 12
+    Sealant: 9
+    Substrate Molecule Sieve: 2
+  structure:
+    cargo: 0
+    power: -3
 - name: Hallucinogen
   mass: 0.5
   value: 14
@@ -502,6 +556,33 @@
 - name: Silver
   mass: 0.6
   value: 20
+- name: Simple Fabricator
+  materials:
+    Aluminum: 8
+    Sealant: 2
+    Tungsten: 4
+    Zero Wire: 3
+  structure:
+    cargo: 15
+    power: -5
+- name: Compound Fabricator
+  materials:
+    Adhesive: 4
+    Isotopic Coolant: 2
+    Tungsten: 8
+    Zero Wire: 5
+  structure:
+    cargo: 10
+    power: -8
+- name: Multiplex Fabricator
+  materials:
+    Lubricant: 6
+    Polymer: 8
+    Positron Battery: 3
+    Titanium: 8
+  structure:
+    cargo: 10
+    power: -12
 - name: Solar Array
   materials:
     Aluminum: 4
@@ -652,6 +733,14 @@
 - name: Toxin
   mass: 0.5
   value: 8
+- name: Transfer Container
+  materials:
+    Iron: 8
+    Lubricant: 4
+    Tungsten: 5
+  structure:
+    cargo: 200
+    power: 0
 - name: Tungsten
   mass: 0.7
   value: 16
@@ -683,6 +772,30 @@
     Vytinium: 2
   mass: 11
   value: 836
+- name: Warehouse - Small
+  materials:
+    Adaptive Frame: 3
+    Aluminum: 6
+    Titanium: 5
+  structure:
+    cargo: 60
+    power: 0
+- name: Warehouse - Medium
+  materials:
+    Adaptive Frame: 5
+    Aluminum: 10
+    Titanium: 8
+  structure:
+    cargo: 157
+    power: 0
+- name: Warehouse - Large
+  materials:
+    Adaptive Frame: 10
+    Aluminum: 20
+    Titanium: 16
+  structure:
+    cargo: 300
+    power: 0
 - name: Water
   mass: 0.5
   value: 4
