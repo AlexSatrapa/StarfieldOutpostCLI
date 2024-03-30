@@ -10,6 +10,7 @@ Describe the use and behaviour of the outpostcli.materials module.
 
 import outpostcli.materials as materials
 import pytest, unittest
+from textwrap import dedent
 
 class DescribeMaterialsModule(unittest.TestCase):
     def setUp(self):
@@ -31,6 +32,7 @@ class DescribeMaterialsModule(unittest.TestCase):
             'name': 'Wind Turbine - Advanced',
             'count': 2,
             'label_text': '',
+            'type': 'power',
             'materials': {
                 'Aluminum': 5,
                 'Isocentered Magnet': 2,
@@ -44,6 +46,7 @@ class DescribeMaterialsModule(unittest.TestCase):
             'name': 'Landing Pad - Small',
             'count': 1,
             'label_text': '',
+            'type': 'misc',
             'materials': {
                 'Aluminum': 8,
                 'Iron': 20,
@@ -57,6 +60,7 @@ class DescribeMaterialsModule(unittest.TestCase):
             'name': 'Industrial Workbench',
             'count': 1,
             'label_text': '',
+            'type': 'crafting',
             'materials': {
                 'Aluminum': 4,
                 'Iron': 3,
@@ -129,6 +133,7 @@ class DescribeMaterialsModule(unittest.TestCase):
             'name': 'Wind Turbine - Advanced',
             'count': 1,
             'label_text': '(3 power)',
+            'type': 'power',
             'materials': {
                 'Aluminum': 5,
                 'Isocentered Magnet': 2,
@@ -288,7 +293,7 @@ class DescribePowerOverrideLabel(unittest.TestCase):
         self.assertEqual(override, 3)
 
 class DescribeCoalesceOperation(unittest.TestCase):
-    def test_it_returns_a_specification_with_elements_in_same_order(self):
+    def test_returns_a_specification_with_elements_in_same_order(self):
         specification = """
         - Wind Turbine - Advanced: 2
         - Landing Pad - Small
@@ -298,7 +303,7 @@ class DescribeCoalesceOperation(unittest.TestCase):
         coalesced = materials.coalesce(expanded)
         self.assertEqual(coalesced, expanded)
 
-    def test_it_collates_repeated_elements_into_the_first(self):
+    def test_collates_repeated_elements_into_the_first(self):
         specification = """
         - 2 Wind Turbine - Advanced (10 power)
         - Landing Pad - Small
@@ -316,6 +321,7 @@ class DescribeCoalesceOperation(unittest.TestCase):
             'name': 'Wind Turbine - Advanced',
             'count': 3,
             'label_text': '(10 power)',
+            'type': 'power',
             'materials': {
                 'Aluminum': 5,
                 'Isocentered Magnet': 2,
@@ -329,6 +335,7 @@ class DescribeCoalesceOperation(unittest.TestCase):
             'name': 'Landing Pad - Small',
             'count': 1,
             'label_text': '',
+            'type': 'misc',
             'materials': {
                 'Aluminum': 8,
                 'Iron': 20,
@@ -342,6 +349,7 @@ class DescribeCoalesceOperation(unittest.TestCase):
             'name': 'Industrial Workbench',
             'count': 1,
             'label_text': '',
+            'type': 'crafting',
             'materials': {
                 'Aluminum': 4,
                 'Iron': 3,
@@ -355,6 +363,7 @@ class DescribeCoalesceOperation(unittest.TestCase):
             'name': 'Extractor - Solid',
             'count': 4,
             'label_text': '(aluminum) (iron) (nickel) (cobalt)',
+            'type': 'extractor',
             'materials': {
                 'Aluminum': 4,
                 'Iron': 5,
@@ -395,3 +404,59 @@ class DescribePowerCheck(unittest.TestCase):
         expanded = materials.expand(specification)
         power_result = materials.power_check(expanded)
         self.assertEqual(power_result, 12.0)
+
+class DescribeBillOfMaterials(unittest.TestCase):
+    def test_describes_the_materials_reqiured_to_build_a_design(self):
+        expanded = [
+            {
+                'name': 'Foobar',
+                'materials': {
+                    'Iron': 5,
+                    'Aluminum': 5
+                }
+            },
+            {
+                'name': 'Blurgle',
+                'materials': {
+                    'Aluminum': 4,
+                    'Beryllium': 3
+                }
+            }
+        ]
+        bill_of_materials = materials.bom(expanded)
+        expected = {
+            'Iron': 5,
+            'Aluminum': 9,
+            'Beryllium': 3
+        }
+        self.assertEqual(bill_of_materials, expected)
+
+    def test_can_group_materials_by_type(self):
+        design = dedent('''
+        - Landing Pad - Small
+        - 6 Solar Dome (4 power)
+        - 3 Extractor - Solid (gold, antimony, copper)
+        - 4 Storage - Solid - Large (gold, antimony, copper, silver)
+        - Simple Fabricator (zero wire)
+        - 2 Warehouse - Large (zero wire, semimetal wafers)
+        - Compound Fabricator (semimetal wafer)
+        ''')
+        spec = materials.expand(design)
+        bill_of_materials = materials.bom(spec, group_by_type=True)
+        expected = {
+            'manufactured': {
+                'Adaptive Frame': 60,
+                'Isotopic Coolant': 2,
+                'Tau Grade Rheostat': 12,
+                'Zero Wire': 8,
+            },
+            'solid': {
+                'Adhesive': 4,
+                'Aluminum': 156,
+                'Iron': 115,
+                'Sealant': 2,
+                'Titanium': 32,
+                'Tungsten': 18,
+            }
+        }
+        self.assertEqual(bill_of_materials, expected)
