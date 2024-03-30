@@ -123,7 +123,7 @@ def condense(expanded_structure):
     yaml_text = yaml.dump(normalised_structure)
     return yaml_text
 
-def bom(yaml_structure) -> dict:
+def bom(yaml_structure, group_by_type=False) -> dict:
     """
     Given a data structure, produce a Bill of Materials (BOM) listing the
     first-level expansion of the materials required to build the specified
@@ -138,10 +138,20 @@ def bom(yaml_structure) -> dict:
         if 'materials' in entry:
             materials = entry['materials']
             for material in materials.keys():
-                if material not in bom_dict:
-                    bom_dict[material] = 0
+                material_type = materials_dict[material]['type']
+                if group_by_type:
+                    if material_type not in bom_dict:
+                        bom_dict[material_type] = {}
+                    if material not in bom_dict[material_type]:
+                        bom_dict[material_type][material] = 0
+                else:
+                    if material not in bom_dict:
+                        bom_dict[material] = 0
                 material_quantity = materials[material] * item_count
-                bom_dict[material] += material_quantity
+                if group_by_type:
+                    bom_dict[material_type][material] += material_quantity
+                else:
+                    bom_dict[material] += material_quantity
     return bom_dict
 
 def power_override(label_string) -> int:

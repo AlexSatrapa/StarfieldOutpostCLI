@@ -97,7 +97,8 @@ def normalise(yaml_specification, power_check=False):
 @outpost.command()
 @click.argument('yaml_specification', type=click.File('rb'), required=False)
 @click.option('--power-check', is_flag=True)
-def bom(yaml_specification, power_check=False):
+@click.option('--group-by-type', is_flag=True)
+def bom(yaml_specification, power_check=False, group_by_type=False):
     """Produce a bill of materials (BOM) from an outpost spec.
 
     YAML_SPECIFICATION is the filename to read the specification from.
@@ -110,13 +111,27 @@ def bom(yaml_specification, power_check=False):
         yaml_specification = input_stream.read()
     materials.load_default()
     yaml_structure = materials.expand(yaml_specification)
-    bom_structure = materials.bom(yaml_structure)
-    sorted_keys = list(bom_structure.keys())
-    sorted_keys.sort()
-    bom_markdown_items = [
-        F'- {item}: {bom_structure[item]}' for item in
-        sorted_keys
-    ]
+    bom_structure = materials.bom(yaml_structure, group_by_type)
+    if group_by_type:
+        sorted_types = list(bom_structure.keys())
+        sorted_types.sort()
+        bom_markdown_items = []
+        for type in sorted_types:
+            sorted_keys = list(bom_structure[type].keys())
+            sorted_keys.sort()
+            bom_markdown_items.append(F'- {type.title()}')
+            type_items = [
+                F'  - {item}: {bom_structure[type][item]}'
+                for item in sorted_keys
+            ]
+            bom_markdown_items.extend(type_items)
+    else:
+        sorted_keys = list(bom_structure.keys())
+        sorted_keys.sort()
+        bom_markdown_items = [
+            F'- {item}: {bom_structure[item]}' for item in
+            sorted_keys
+        ]
     bom_markdown = "\n".join(bom_markdown_items)
     click.echo("\nBill of Materials:\n")
     click.echo(bom_markdown)
