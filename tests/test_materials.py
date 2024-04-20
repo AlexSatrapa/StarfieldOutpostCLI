@@ -266,6 +266,37 @@ class DescribeItemName(unittest.TestCase):
         }
         self.assertEqual(found, expected)
 
+class DescribeLabelsList(unittest.TestCase):
+    def test_is_empty_if_labels_are_missing(self):
+        labels_string = None
+        labels_list = materials.parse_labels(labels_string)
+        self.assertEqual(labels_list, [])
+
+    def test_is_empty_if_there_are_no_labels(self):
+        labels_string = ''
+        labels_value = materials.parse_labels(labels_string)
+        self.assertEqual(labels_value, [])
+
+    def test_is_one_label_if_labels_has_one_entry(self):
+        labels_string = 'foobar'
+        labels_value = materials.parse_labels(labels_string)
+        self.assertEqual(set(labels_value), set(['foobar']))
+
+    def test_is_multiple_labels_if_labels_has_comma_separated_components(self):
+        labels_string = 'foobar, blurgle, qux'
+        labels_value = materials.parse_labels(labels_string)
+        self.assertEqual(set(labels_value), set(['foobar', 'blurgle', 'qux']))
+
+    def test_can_contain_number_string_components(self):
+        labels_string = 'foobar, 5 blurgle, 32 qux'
+        labels_value = materials.parse_labels(labels_string)
+        self.assertEqual(set(labels_value), set(['foobar', '5 blurgle', '32 qux']))
+
+    def test_can_contain_string_colon_number_components(self):
+        labels_string = 'foobar, blurgle: 5, qux: 32'
+        labels_value = materials.parse_lables(lables_string)
+        self.assertEqual(set(labels_value), set(['foobar', 'blurgle: 5', 'qux: 32']))
+
 class DescribePowerOverrideLabel(unittest.TestCase):
     def test_is_none_if_label_is_not_present(self):
         label_string = ''
