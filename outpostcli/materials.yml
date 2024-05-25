@@ -898,7 +898,7 @@
   mass: 0.9
   value: 40
   type: gas
-- name: Veryl-Treated manifold
+- name: Veryl-Treated Manifold
   materials:
     Austenitic Manifold: 1
     Lubricant: 2
