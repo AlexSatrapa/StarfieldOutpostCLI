@@ -113,10 +113,18 @@ def bom(yaml_specification, power_check=False, group_by_type=False):
     yaml_structure = materials.expand(yaml_specification)
     bom_structure = materials.bom(yaml_structure, group_by_type)
     if group_by_type:
-        sorted_types = list(bom_structure.keys())
-        sorted_types.sort()
+        material_types = []
+        bom_types = list(bom_structure.keys())
+        if "manufactured" in bom_types:
+            material_types.append("manufactured")
+        if "solid" in bom_types:
+            material_types.append("solid")
+        if "liquid" in bom_types:
+            material_types.append("liquid")
+        if "gas" in bom_types:
+            material_types.append("gas")
         bom_markdown_items = []
-        for type in sorted_types:
+        for type in material_types:
             sorted_keys = list(bom_structure[type].keys())
             sorted_keys.sort()
             bom_markdown_items.append(F'- {type.title()}')
@@ -148,11 +156,9 @@ def specification(yaml_specification, power_check=False):
     YAML_SPECIFICATION is the filename to read the specification from.
     If this is not provided, the specification will be read from STDIN.
 
-    Output is:
-
-    - a Markdown list of the outpost structures
-    - an optional power check calculation (if '--power-check' is provided)
-    - a Markdown list of Material:Quantity entries.
+    Output is a Markdown list of the outpost structures with an optional power check
+    calculation (if '--power-check' is provided) and a Markdown list of
+    Material:Quantity entries.
     """
     if yaml_specification is None:
         input_stream = click.get_text_stream('stdin')
