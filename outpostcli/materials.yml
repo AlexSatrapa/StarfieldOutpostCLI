@@ -443,6 +443,15 @@
     power: 0
     cargo: 0
   type: misc
+- name: Landing Pad with Shipbuilder
+  materials:
+    Adaptive Frame: 18
+    Beryllium: 2
+    Iron: 30
+    Zero Wire: 2
+  structure:
+    power: 0
+    cargo: 0
 - name: Lead
   mass: 0.7
   value: 10
